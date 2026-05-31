@@ -34,14 +34,12 @@ export default function ReadPost() {
         ← Back to Home
       </button>
 
-      {/* Cover Banner */}
       <div style={{
         height: '8px', borderRadius: '20px',
         background: `linear-gradient(90deg, ${post.coverColor || '#667eea'}, ${post.coverColor || '#764ba2'})`,
         marginBottom: '2rem', boxShadow: `0 4px 15px ${post.coverColor || '#667eea'}40`,
       }} />
 
-      {/* Category */}
       <span style={{
         fontSize: '11px', fontWeight: 600, padding: '4px 12px', borderRadius: '20px',
         background: '#ede9fe', color: '#6d28d9', textTransform: 'uppercase', letterSpacing: '0.5px',
@@ -49,12 +47,10 @@ export default function ReadPost() {
         {post.category}
       </span>
 
-      {/* Title */}
       <h1 style={{ fontFamily: 'Lora, serif', fontSize: '2.2rem', fontWeight: 700, color: '#1a1a2e', margin: '1rem 0', lineHeight: 1.25 }}>
         {post.title}
       </h1>
 
-      {/* Meta */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         <div style={{
           width: '38px', height: '38px', borderRadius: '50%',
@@ -73,7 +69,6 @@ export default function ReadPost() {
         </div>
       </div>
 
-      {/* Tags */}
       {(post.tags || []).length > 0 && (
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '2rem' }}>
           {post.tags.map(t => (
@@ -84,7 +79,6 @@ export default function ReadPost() {
         </div>
       )}
 
-      {/* Content */}
       <div style={{
         fontSize: '17px', lineHeight: 1.9, color: '#374151',
         whiteSpace: 'pre-wrap', marginBottom: '3rem',
@@ -93,14 +87,15 @@ export default function ReadPost() {
         {post.content}
       </div>
 
-      {/* Like Button */}
       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '2rem', borderTop: '1px solid #f0f0f0' }}>
         <button onClick={handleLike} style={{
           display: 'flex', alignItems: 'center', gap: '10px',
-          padding: '14px 32px', borderRadius: '50px', border: 'none', cursor: liked ? 'default' : 'pointer',
+          padding: '14px 32px', borderRadius: '50px',
+          cursor: liked ? 'default' : 'pointer',
           background: liked ? 'linear-gradient(135deg, #f5576c, #f093fb)' : '#fff',
           color: liked ? '#fff' : '#555',
-          border: liked ? 'none' : '1.5px solid #e5e7eb',
+          outline: liked ? 'none' : '1.5px solid #e5e7eb',
+          border: 'none',
           fontSize: '16px', fontWeight: 600,
           boxShadow: liked ? '0 4px 20px rgba(245,87,108,0.4)' : '0 2px 8px rgba(0,0,0,0.06)',
           transition: 'all 0.2s',
