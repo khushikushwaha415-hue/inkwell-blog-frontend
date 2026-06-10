@@ -37,7 +37,7 @@ export default function Register() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {[
-            { label: 'Full Name', key: 'name', type: 'text', placeholder: 'Rahul Sharma' },
+            { label: 'Full Name', key: 'name', type: 'text', placeholder: 'Enter your name' },
             { label: 'Email', key: 'email', type: 'email', placeholder: 'you@example.com' },
             { label: 'Password', key: 'password', type: 'password', placeholder: '••••••••' },
           ].map(field => (
