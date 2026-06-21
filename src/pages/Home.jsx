@@ -59,7 +59,7 @@ export default function Home() {
         {[
           { label: 'Articles', value: posts.length, emoji: '📝' },
           { label: 'Total Reads', value: posts.reduce((a, p) => a + p.views, 0), emoji: '👁' },
-          { label: 'Total Likes', value: posts.reduce((a, p) => a + p.likes, 0), emoji: '❤️' },
+          { label: 'Total Likes', value: posts.reduce((a, p) => a + (p.likes || 0), 0), emoji: '❤️', color: '#f5576c' },
         ].map(s => (
           <div key={s.label} style={{
             background: '#fff', borderRadius: '14px', padding: '1rem 2rem',
