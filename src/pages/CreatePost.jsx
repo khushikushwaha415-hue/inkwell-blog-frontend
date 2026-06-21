@@ -6,7 +6,7 @@ const CATEGORIES = ['Technology', 'Life', 'Travel', 'Food', 'Health', 'Finance',
 const COLORS = ['#667eea', '#f5576c', '#4facfe', '#43e97b', '#fa709a', '#fee140', '#1a1a2e', '#085041'];
 
 export default function CreatePost() {
-  const [form, setForm] = useState({ title: '', excerpt: '', content: '', category: 'Technology', tags: '', coverColor: '#667eea' });
+  const [form, setForm] = useState({ title: '', excerpt: '', content: '', category: 'Technology', tags: '', coverColor: '#667eea', isPublic: true });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -77,6 +77,30 @@ export default function CreatePost() {
                 boxShadow: form.coverColor === c ? '0 0 0 2px #fff inset' : 'none',
               }} />
             ))}
+          </div>
+        </div>
+
+        <div>
+          <label style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '8px' }}>Visibility</label>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button onClick={() => set('isPublic', true)} style={{
+              flex: 1, padding: '10px', borderRadius: '10px', cursor: 'pointer',
+              border: form.isPublic ? '2px solid #667eea' : '1.5px solid #e5e7eb',
+              background: form.isPublic ? '#eef0ff' : '#fff',
+              color: form.isPublic ? '#667eea' : '#888',
+              fontWeight: 600, fontSize: '13px',
+            }}>
+              🌍 Public — sab dekh sakein
+            </button>
+            <button onClick={() => set('isPublic', false)} style={{
+              flex: 1, padding: '10px', borderRadius: '10px', cursor: 'pointer',
+              border: !form.isPublic ? '2px solid #667eea' : '1.5px solid #e5e7eb',
+              background: !form.isPublic ? '#eef0ff' : '#fff',
+              color: !form.isPublic ? '#667eea' : '#888',
+              fontWeight: 600, fontSize: '13px',
+            }}>
+              🔒 Private — sirf dashboard mein
+            </button>
           </div>
         </div>
 
