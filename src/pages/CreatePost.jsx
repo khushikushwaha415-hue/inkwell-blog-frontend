@@ -90,7 +90,7 @@ export default function CreatePost() {
               color: form.isPublic ? '#667eea' : '#888',
               fontWeight: 600, fontSize: '13px',
             }}>
-              🌍 Public — sab dekh sakein
+              🌍 Public — visible to everyone
             </button>
             <button onClick={() => set('isPublic', false)} style={{
               flex: 1, padding: '10px', borderRadius: '10px', cursor: 'pointer',
@@ -99,7 +99,7 @@ export default function CreatePost() {
               color: !form.isPublic ? '#667eea' : '#888',
               fontWeight: 600, fontSize: '13px',
             }}>
-              🔒 Private — sirf dashboard mein
+              🔒 Private — only in your dashboard
             </button>
           </div>
         </div>

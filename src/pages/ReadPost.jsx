@@ -1,22 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 
 export default function ReadPost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [liked, setLiked] = useState(false);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    API.get(`/posts/${id}`).then(r => setPost(r.data));
-  }, [id]);
+    API.get(`/posts/${id}`).then(r => {
+      setPost(r.data);
+      if (user && r.data.likedBy) {
+        setLiked(r.data.likedBy.includes(user._id));
+      }
+    });
+  }, [id, user]);
 
   const handleLike = async () => {
-    if (liked) return;
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     const { data } = await API.put(`/posts/${id}/like`);
     setPost(data);
-    setLiked(true);
+    setLiked(data.likedBy.includes(user._id));
   };
 
   if (!post) return (
@@ -91,7 +101,7 @@ export default function ReadPost() {
         <button onClick={handleLike} style={{
           display: 'flex', alignItems: 'center', gap: '10px',
           padding: '14px 32px', borderRadius: '50px',
-          cursor: liked ? 'default' : 'pointer',
+          cursor: 'pointer',
           background: liked ? 'linear-gradient(135deg, #f5576c, #f093fb)' : '#fff',
           color: liked ? '#fff' : '#555',
           outline: liked ? 'none' : '1.5px solid #e5e7eb',
@@ -100,7 +110,7 @@ export default function ReadPost() {
           boxShadow: liked ? '0 4px 20px rgba(245,87,108,0.4)' : '0 2px 8px rgba(0,0,0,0.06)',
           transition: 'all 0.2s',
         }}>
-          {liked ? '❤️' : '🤍'} {post.likes} {liked ? 'Liked!' : 'Like this post'}
+          {liked ? '❤️' : '🤍'} {post.likes} {liked ? 'Liked' : 'Like'}
         </button>
       </div>
     </div>
