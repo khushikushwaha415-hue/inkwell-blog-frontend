@@ -49,8 +49,8 @@ export default function Dashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
         {[
           { label: 'Total Posts', value: posts.length, emoji: '📝', color: '#667eea' },
-          { label: 'Total Likes', value: posts.reduce((a, p) => a + p.likes, 0), emoji: '❤️', color: '#f5576c' },
-          { label: 'Total Views', value: posts.reduce((a, p) => a + p.views, 0), emoji: '👁', color: '#4facfe' },
+          { label: 'Total Likes', value: posts.reduce((a, p) => a + (p.likes || 0), 0), emoji: '❤️', color: '#f5576c' },
+          { label: 'Total Views', value: posts.reduce((a, p) => a + (p.views || 0), 0), emoji: '👁', color: '#4facfe' },
         ].map(s => (
           <div key={s.label} style={{ background: '#fff', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', border: '1px solid #eee', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             <div style={{ fontSize: '1.8rem' }}>{s.emoji}</div>
