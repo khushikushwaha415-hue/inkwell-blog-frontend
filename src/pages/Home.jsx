@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import API from '../api/axios';
 
 const CATEGORY_COLORS = {
@@ -18,10 +18,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const fetchPosts = () => {
+    setLoading(true);
+    API.get('/posts').then(r => { setPosts(r.data); setLoading(false); });
+  };
 
   useEffect(() => {
-    API.get('/posts').then(r => { setPosts(r.data); setLoading(false); });
-  }, []);
+    fetchPosts();
+  }, [location.pathname]);
 
   const categories = ['All', ...Object.keys(CATEGORY_COLORS)];
   const filtered = activeCategory === 'All' ? posts : posts.filter(p => p.category === activeCategory);
@@ -58,8 +64,8 @@ export default function Home() {
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', justifyContent: 'center' }}>
         {[
           { label: 'Articles', value: posts.length, emoji: '📝' },
-          { label: 'Total Reads', value: posts.reduce((a, p) => a + p.views, 0), emoji: '👁' },
-          { label: 'Total Likes', value: posts.reduce((a, p) => a + (p.likes || 0), 0), emoji: '❤️', color: '#f5576c' },
+          { label: 'Total Reads', value: posts.reduce((a, p) => a + (p.views || 0), 0), emoji: '👁' },
+          { label: 'Total Likes', value: posts.reduce((a, p) => a + (p.likes || 0), 0), emoji: '❤️' },
         ].map(s => (
           <div key={s.label} style={{
             background: '#fff', borderRadius: '14px', padding: '1rem 2rem',
@@ -102,7 +108,6 @@ export default function Home() {
           background: '#fff', borderRadius: '20px', overflow: 'hidden',
           border: '1px solid #eee', marginBottom: '2rem', cursor: 'pointer',
           boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          transition: 'transform 0.2s, box-shadow 0.2s',
         }}
           onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
           onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
@@ -110,7 +115,6 @@ export default function Home() {
           <div style={{
             background: `linear-gradient(135deg, ${featured.coverColor || '#667eea'}, ${featured.coverColor || '#764ba2'}dd)`,
             minHeight: '260px', display: 'flex', alignItems: 'flex-end', padding: '1.5rem',
-            position: 'relative',
           }}>
             <span style={{
               background: 'rgba(255,255,255,0.2)', color: '#fff',
@@ -127,12 +131,12 @@ export default function Home() {
             </h2>
             <p style={{ color: '#666', fontSize: '14px', lineHeight: 1.7 }}>{featured.excerpt}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#999' }}>
-              <Avatar name={featured.author?.name} />
+              <Avatar name={featured.author?.name} color={featured.coverColor} />
               <span style={{ fontWeight: 500, color: '#555' }}>{featured.author?.name}</span>
               <span>·</span>
-              <span>❤️ {featured.likes}</span>
+              <span>❤️ {featured.likes || 0}</span>
               <span>·</span>
-              <span>👁 {featured.views}</span>
+              <span>👁 {featured.views || 0}</span>
             </div>
           </div>
         </div>
@@ -160,12 +164,12 @@ export default function Home() {
                 <p style={{ fontSize: '13px', color: '#777', lineHeight: 1.6, marginBottom: '12px' }}>{post.excerpt}</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid #f0f0f0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#888' }}>
-                    <Avatar name={post.author?.name} size={22} />
+                    <Avatar name={post.author?.name} color={post.coverColor} size={22} />
                     <span>{post.author?.name}</span>
                   </div>
                   <div style={{ fontSize: '11px', color: '#aaa', display: 'flex', gap: '8px' }}>
-                    <span>❤️ {post.likes}</span>
-                    <span>👁 {post.views}</span>
+                    <span>❤️ {post.likes || 0}</span>
+                    <span>👁 {post.views || 0}</span>
                   </div>
                 </div>
               </div>
@@ -186,11 +190,11 @@ function CategoryBadge({ category }) {
   );
 }
 
-function Avatar({ name, size = 26 }) {
+function Avatar({ name, color, size = 26 }) {
   const colors = ['#667eea', '#f5576c', '#4facfe', '#43e97b', '#fa709a', '#fee140'];
-  const color = colors[(name?.charCodeAt(0) || 0) % colors.length];
+  const bg = color || colors[(name?.charCodeAt(0) || 0) % colors.length];
   return (
-    <div style={{ width: size, height: size, borderRadius: '50%', background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: size * 0.45, fontWeight: 700, flexShrink: 0 }}>
+    <div style={{ width: size, height: size, borderRadius: '50%', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: size * 0.45, fontWeight: 700, flexShrink: 0 }}>
       {name?.charAt(0).toUpperCase()}
     </div>
   );
