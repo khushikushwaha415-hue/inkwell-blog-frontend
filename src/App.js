@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreatePost from './pages/CreatePost';
+import EditPost from './pages/EditPost';
 import ReadPost from './pages/ReadPost';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/post/:id" element={<ReadPost />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
+          <Route path="/edit/:id" element={<ProtectedRoute><EditPost /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
